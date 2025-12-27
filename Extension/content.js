@@ -1,3 +1,10 @@
+// Fakemonnnnnn
+const fakemon = {
+    "stellotl-slumbering": "https://i.imgur.com/LXS0TVa.png",
+    "stellotl-awakened": "https://i.imgur.com/9WC9DRh.png",
+    "poranis": "https://i.imgur.com/ptLxoGW.png"
+};
+
 // pokemon missing from pokepast.es
 const replacements = [
     "poltchageist",
@@ -64,7 +71,10 @@ const replacements = [
     "arceus-water",
     "dialga-origin",
     "palkia-origin",
-    "magearna-original"
+    "magearna-original",
+    "stellotl-slumbering",
+    "stellotl-awakened",
+    "poranis"
 ];
 
 // incorrectly spelled cases point to the correct spelling
@@ -91,7 +101,8 @@ const badnames = {
     "hearthflame mask ogerpon": "ogerpon-hearthflame",
     "wellspring mask ogerpon": "ogerpon-wellspring",
     "origin forme dialga": "dialga-origin",
-    "origin forme palkia": "palkia-origin"
+    "origin forme palkia": "palkia-origin",
+    "stellotl" : "stellotl-slumbering"
 };
 
 const items = {
@@ -102,6 +113,7 @@ const items = {
     "lustrous globe": "https://www.serebii.net/itemdex/sprites/sv/lustrousglobe.png",
     "adamant crystal": "https://www.serebii.net/itemdex/sprites/sv/adamantcrystal.png",
     "griseous core": "https://www.serebii.net/itemdex/sprites/sv/griseouscore.png",
+    "star crystal": "https://i.imgur.com/2Q5UUCM.png"
 };
 
 // encode as route
@@ -142,19 +154,24 @@ function encodeName(name) {
 
 // function that replaces the image sources
 function replaceImage(q, imgElement, pokemon_name) {
-    const img = new Image();
-    let route = encodeName(pokemon_name);
+    const route = encodeName(pokemon_name);
+    // fakemon check
+    if (fakemon[route]) {
+        imgElement.src = fakemon[route];
+        return;
+    }
+    // normal pokemon check
     const imageUrl = `https://chiy.uk/${q}/${route}`;
+    const img = new Image();
     img.src = imageUrl;
-    img.onload = function() {
-        // the image loaded successfully
+    img.onload = function () {
         imgElement.src = imageUrl;
     };
-    img.onerror = function() {
-        // an error occurred while loading the image (e.g., 403 Forbidden)
+    img.onerror = function () {
         console.error('Image failed to load: ' + imageUrl);
     };
 }
+
 
 function replacePokemon(q, pokemon, pokemon_name) {
     const imgElement = pokemon.querySelector('.img-pokemon');
